@@ -70,7 +70,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 vim.lsp.config("*", {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
-        local ok, diag = pcall(require, "workspace-diagnostic")
+        local ok, diag = pcall(require, "general.workspace-diagnostic")
         if ok then
             diag.populate_workspace_diagnostics(client, bufnr)
         end
@@ -121,7 +121,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
         keymap("n", "gd", lsp.buf.definition, opt("Go to definition"))
         keymap("n", "gD", function()
-            local ok, diag = pcall(require, "rj.extras.definition")
+            local ok, diag = pcall(require, "general.definition")
             if ok then
                 diag.get_def()
             end
@@ -143,7 +143,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         keymap("n", "<Leader>li", vim.cmd.LspInfo, opt("LspInfo"))
         keymap("n", "<Leader>ll", lsp.codelens.run, opt("Run CodeLens"))
         keymap("n", "<Leader>lr", lsp.buf.rename, opt("Rename"))
-        keymap("n", "<Leader>ls", lsp.buf.document_symbol, opt("Doument Symbols"))
+        keymap("n", "<Leader>ls", function() vim.cmd.Pick("lsp", "scope='document_symbol'") end, opt("Doument Symbols"))
 
         -- diagnostic mappings
         keymap("n", "<Leader>dD", function()
@@ -249,6 +249,11 @@ vim.lsp.config.lua_ls = {
         Lua = {
             telemetry = {
                 enable = false,
+            },
+            diagnostics = {
+                globals = { 'vim' },
+                undefined_global = false,   -- remove this from diag!
+                missing_parameters = false, -- missing fields :)
             },
         },
     },

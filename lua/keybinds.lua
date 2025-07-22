@@ -163,7 +163,7 @@ keymap("n", "<leader>wh", "<cmd>wincmd h<cr>", { noremap = true, silent = true, 
 -- keymap('n', '<S-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 keymap("n", "<leader>wq", "<cmd>wincmd q<cr>", { noremap = true, silent = true, desc = 'Close Window' })
-keymap("n", "<leader>n", "<cmd>noh<cr>", { noremap = true, silent = true, desc = 'Clear Search Highlight' })
+keymap("n", "<leader>N", "<cmd>noh<cr>", { noremap = true, silent = true, desc = 'Clear Search Highlight' })
 
 -- Split "Sensibly"
 -- Should automatically split or vsplit based on Ratios

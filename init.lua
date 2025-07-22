@@ -38,15 +38,14 @@ now(function()
     vim.o.spelloptions = 'camel'
     vim.opt.complete:append('kspell')
 
+    vim.o.guifont = "FiraCode Nerd Font:h12"
 
     vim.cmd('filetype plugin indent on')
     -- vim.cmd('colorscheme modus-tinted')
 end)
 
-vim.o.guifont = "FiraCode Nerd Font:h12"
-
-later(function() require('mini.ai').setup() end)
-later(function() require('mini.align').setup() end)
+require('plugins.mini-init')
+require('plugins.mini-ai')
 later(function()
     -- This is needed for mini.animate to work with mouse scrolling
     vim.opt.mousescroll = 'ver:1,hor:1'
@@ -86,97 +85,11 @@ end)
 --         }
 --     })
 -- end)
-later(function()
-    require('mini.basics').setup({
-        options = {
-            basic = true,
-            extra_ui = true,
-            win_borders = 'bold',
-        },
-        mappings = {
-            basic = true,
-            windows = true,
-        },
-        autocommands = {
-            basic = true,
-            relnum_in_visual_mode = true,
-        }
-    })
-end)
-later(function() require('mini.bracketed').setup() end)
-later(function() require('mini.bufremove').setup() end)
-later(function()
-    require('mini.clue').setup({
-        triggers = {
-            -- Leader triggers
-            { mode = 'n', keys = '<Leader>' },
-            { mode = 'x', keys = '<Leader>' },
-
-            { mode = 'n', keys = '\\' },
-
-            -- Built-in completion
-            { mode = 'i', keys = '<C-x>' },
-
-            -- `g` key
-            { mode = 'n', keys = 'g' },
-            { mode = 'x', keys = 'g' },
-
-            -- Marks
-            { mode = 'n', keys = "'" },
-            { mode = 'n', keys = '`' },
-            { mode = 'x', keys = "'" },
-            { mode = 'x', keys = '`' },
-
-            -- Registers
-            { mode = 'n', keys = '"' },
-            { mode = 'x', keys = '"' },
-            { mode = 'i', keys = '<C-r>' },
-            { mode = 'c', keys = '<C-r>' },
-
-            -- Window commands
-            { mode = 'n', keys = '<C-w>' },
-
-            -- `z` key
-            { mode = 'n', keys = 'z' },
-            { mode = 'x', keys = 'z' },
-        },
-
-        clues = {
-            { mode = 'n', keys = '<Leader>b', desc = ' Buffer' },
-            { mode = 'n', keys = '<Leader>f', desc = ' Find' },
-            { mode = 'n', keys = '<Leader>g', desc = '󰊢 Git' },
-            { mode = 'n', keys = '<Leader>i', desc = '󰏪 Insert' },
-            { mode = 'n', keys = '<Leader>l', desc = '󰘦 LSP' },
-            { mode = 'n', keys = '<Leader>q', desc = ' NVim' },
-            { mode = 'n', keys = '<Leader>s', desc = '󰆓 Session' },
-            { mode = 'n', keys = '<Leader>u', desc = '󰔃 UI' },
-            { mode = 'n', keys = '<Leader>w', desc = ' Window' },
-            require('mini.clue').gen_clues.g(),
-            require('mini.clue').gen_clues.builtin_completion(),
-            require('mini.clue').gen_clues.marks(),
-            require('mini.clue').gen_clues.registers(),
-            require('mini.clue').gen_clues.windows(),
-            require('mini.clue').gen_clues.z(),
-        },
-        window = {
-            delay = 300
-        }
-    })
-end)
+require('plugins.mini-basics')
+require('plugins.mini-buffermove')
+require('plugins.mini-clue')
 -- later(function() require('mini.colors').setup() end)
-later(function() require('mini.comment').setup() end)
-later(function()
-    require('mini.completion').setup({
-        mappings = {
-            go_in = '<RET>',
-        },
-        window = {
-            info = { border = 'rounded' },
-            signature = { border = 'rounded' },
-        }
-    })
-end)
-later(function() require('mini.cursorword').setup() end)
+require('plugins.mini-completion')
 later(function()
     require('mini.diff').setup({
         view = {
@@ -185,36 +98,8 @@ later(function()
         }
     })
 end)
-later(function() require('mini.doc').setup() end)
-later(function() require('mini.extra').setup() end)
-later(function()
-    require('mini.files').setup({
-        windows = {
-            preview = true,
-            width_preview = 80,
-        }
-    })
-end)
-later(function() require('mini.fuzzy').setup() end)
-later(function() require('mini.git').setup() end)
-now(function()
-    local hipatterns = require('mini.hipatterns')
-
-    hipatterns.setup({
-        highlighters = {
-            -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-            fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-            hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
-            todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
-            note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
-
-
-            -- Highlight hex color strings (`#rrggbb`) using that color
-            hex_color = hipatterns.gen_highlighter.hex_color(),
-        },
-    })
-
-end)
+require('plugins.mini-files')
+require('plugins.mini-hipatterns')
 -- We disable this, as we use our own Colorscheme through mini.colors
 -- You can enable this by uncommenting
 -- We Provide a Modus Vivendi inspired setup here
@@ -226,69 +111,10 @@ later(function()
         saturation = 'medium'
     })
 end)
-later(function()
-        require('mini.icons').setup({})
-end)
-later(function()
-    require('mini.indentscope').setup({
-        draw = {
-            animation = function() return 1 end,
-        },
-        symbol = "│"
-    })
-end)
-later(function() require('mini.jump').setup() end)
-later(function() require('mini.jump2d').setup() end)
-later(function() require('mini.map').setup() end)
-later(function() require('mini.misc').setup() end)
-later(function() require('mini.move').setup({}) end)
-later(function()
-    -- We took this from echasnovski's personal configuration
-    -- https://github.com/echasnovski/nvim/blob/master/init.lua
-    local filterout_lua_diagnosing = function(notif_arr)
-        local not_diagnosing = function(notif) return not vim.startswith(notif.msg, 'lua_ls: Diagnosing') end
-        notif_arr = vim.tbl_filter(not_diagnosing, notif_arr)
-        return MiniNotify.default_sort(notif_arr)
-    end
-    require('mini.notify').setup({
-        content = { sort = filterout_lua_diagnosing },
-        window = { config = { border = 'double' } },
-    })
-    -- vim.notify = MiniNotify.make_notify()
-end)
-later(function() require('mini.operators').setup() end)
-later(function() require('mini.pairs').setup() end)
-later(function()
-    local win_config = function()
-        height = math.floor(0.618 * vim.o.lines)
-        width = math.floor(0.618 * vim.o.columns)
-        return {
-            anchor = 'NW',
-            height = height,
-            width = width,
-            border = 'rounded',
-            row = math.floor(0.5 * (vim.o.lines - height)),
-            col = math.floor(0.5 * (vim.o.columns - width)),
-        }
-    end
-    require('mini.pick').setup({
-        mappings = {
-            choose_in_vsplit = '<C-CR>',
-        },
-        options = {
-            use_cache = true
-        },
-        window = {
-            config = win_config
-        }
-    })
-    vim.ui.select = MiniPick.ui_select
-end)
-now(function()
-    require('mini.sessions').setup({
-        autowrite = true
-    })
-end)
+require('plugins.mini-indentscope')
+require('plugins.mini-notify')
+require('plugins.mini-pick')
+require('plugins.mini-sessions')
 later(function() require('mini.splitjoin').setup() end)
 now(function()
     require('mini.starter').setup({
@@ -315,10 +141,6 @@ later(function()
         use_icons = true,
     })
 end)
-later(function() require('mini.surround').setup() end)
-later(function() require('mini.tabline').setup() end)
-later(function() require('mini.trailspace').setup() end)
-later(function() require('mini.visits').setup() end)
 require("plugins.mason")
 require("lsp")
 later(function()
